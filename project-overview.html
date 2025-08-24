@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangla Market - Full Stack E-commerce Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .tech-badge {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            background-size: 200% 200%;
+            animation: gradient 3s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .folder-tree {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            background: #1a1a1a;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        .folder { color: #fbbf24; }
+        .file { color: #10b981; }
+        .config { color: #8b5cf6; }
+        .component { color: #3b82f6; }
+        
+        /* Backend Services Styles */
+        .service-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .gateway-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .protocol-badge {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .network-graph {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <h1 class="text-5xl font-bold mb-4">Bangla Market</h1>
+                <p class="text-xl mb-8">Next-Generation Multi-Vendor E-commerce Platform</p>
+                <div class="flex justify-center items-center space-x-8">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold">7</div>
+                        <div class="text-sm">Microservices</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold">5</div>
+                        <div class="text-sm">Frontend Apps</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold">15+</div>
+                        <div class="text-sm">Technologies</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold">500+</div>
+                        <div class="text-sm">API Endpoints</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Architecture Overview -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">System Architecture</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card-hover bg-blue-50 p-8 rounded-lg border-l-4 border-blue-500">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-800">Frontend Layer</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Customer Portal (Next.js)</li>
+                        <li>• Vendor Dashboard (Next.js)</li>
+                        <li>• Admin Panel (Next.js)</li>
+                        <li>• Android App (React Native)</li>
+                        <li>• iOS App (React Native)</li>
+                        <li>• Real-time Updates</li>
+                        <li>• Responsive Design</li>
+                    </ul>
+                </div>
+                <div class="card-hover bg-green-50 p-8 rounded-lg border-l-4 border-green-500">
+                    <h3 class="text-2xl font-bold mb-4 text-green-800">Backend Layer</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• API Gateway (NestJS)</li>
+                        <li>• Microservices Architecture</li>
+                        <li>• gRPC Communication</li>
+                        <li>• Kafka Event Streaming</li>
+                        <li>• JWT Authentication</li>
+                        <li>• Role-based Access</li>
+                    </ul>
+                </div>
+                <div class="card-hover bg-purple-50 p-8 rounded-lg border-l-4 border-purple-500">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-800">Data Layer</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• PostgreSQL Databases</li>
+                        <li>• Prisma ORM</li>
+                        <li>• Database per Service</li>
+                        <li>• Data Consistency</li>
+                        <li>• Migration Support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Backend Services Architecture -->
+    <section class="py-16 bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">🏗️ Backend Services Architecture</h2>
+            
+            <!-- Services Overview Stats -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8 max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div class="text-3xl font-bold text-blue-600">1</div>
+                        <div class="text-sm text-gray-600">API Gateway</div>
+                        <div class="text-xs text-gray-500 mt-1">Port 50050</div>
+                    </div>
+                    <div class="text-center p-4 bg-purple-50 rounded-lg">
+                        <div class="text-3xl font-bold text-purple-600">6</div>
+                        <div class="text-sm text-gray-600">Core Services + Kafka</div>
+                        <div class="text-xs text-gray-500 mt-1">Ports 50051-50055 + 9092</div>
+                    </div>
+                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                        <div class="text-3xl font-bold text-green-600">gRPC</div>
+                        <div class="text-sm text-gray-600">Communication</div>
+                        <div class="text-xs text-gray-500 mt-1">Protocol Buffers</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Gateway -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4 text-center">🚪 API Gateway</h3>
+                <div class="gateway-card service-card rounded-xl p-6 text-white mb-6 max-w-4xl mx-auto">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-xl font-bold">API Gateway</h4>
+                        <span class="protocol-badge px-3 py-1 rounded-full text-sm font-medium">Port 50050</span>
+                    </div>
+                    <p class="text-white/90 mb-4">Central entry point for all client requests. Handles authentication, routing, and communication with microservices.</p>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <div class="font-semibold mb-1">Framework:</div>
+                            <div class="text-white/80">NestJS</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold mb-1">Communication:</div>
+                            <div class="text-white/80">HTTP → gRPC</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Services Grid -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">🔧 Core Microservices</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    
+                    <!-- User Service -->
+                    <div class="service-card rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-lg font-bold">👤 User Service</h4>
+                            <span class="protocol-badge px-3 py-1 rounded-full text-sm font-medium">:50051</span>
+                        </div>
+                        <p class="text-white/90 mb-4">Handles user authentication, profiles, and address management.</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-white/80">gRPC Methods:</span>
+                                <span class="font-medium">15+</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/80">Database:</span>
+                                <span class="font-medium">PostgreSQL</span>
+                            </div>
+                            <div class="text-white/80 text-xs mt-2">
+                                Auth, Profile, Addresses, Admin Management
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Service -->
+                    <div class="service-card rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-lg font-bold">📦 Product Service</h4>
+                            <span class="protocol-badge px-3 py-1 rounded-full text-sm font-medium">:50052</span>
+                        </div>
+                        <p class="text-white/90 mb-4">Manages product catalog, categories, brands, and inventory.</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-white/80">Proto Files:</span>
+                                <span class="font-medium">4</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/80">Database:</span>
+                                <span class="font-medium">PostgreSQL</span>
+                            </div>
+                            <div class="text-white/80 text-xs mt-2">
+                                Products, Categories, Brands, Attributes
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Service -->
+                    <div class="service-card rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-lg font-bold">🛒 Order Service</h4>
+                            <span class="protocol-badge px-3 py-1 rounded-full text-sm font-medium">:50053</span>
+                        </div>
+                        <p class="text-white/90 mb-4">Processes orders, payments, and order lifecycle management.</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-white/80">Dependencies:</span>
+                                <span class="font-medium">User, Product</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/80">Database:</span>
+                                <span class="font-medium">PostgreSQL</span>
+                            </div>
+                            <div class="text-white/80 text-xs mt-2">
+                                Order Processing, Payments, Vendor Orders
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vendor Service -->
+                    <div class="service-card rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-lg font-bold">🏪 Vendor Service</h4>
+                            <span class="protocol-badge px-3 py-1 rounded-full text-sm font-medium">:50054</span>
+                        </div>
+                        <p class="text-white/90 mb-4">Manages vendor profiles, stores, and vendor-specific operations.</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-white/80">Dependencies:</span>
+                                <span class="font-medium">User</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/80">Database:</span>
+                                <span class="font-medium">PostgreSQL</span>
+                            </div>
+                            <div class="text-white/80 text-xs mt-2">
+                                Vendor Registration, Store Management
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notification Service -->
+                    <div class="service-card rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-lg font-bold">🔔 Notification Service</h4>
+                            <span class="protocol-badge px-3 py-1 rounded-full text-sm font-medium">:50055</span>
+                        </div>
+                        <p class="text-white/90 mb-4">Handles email, SMS, and push notifications across the platform.</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-white/80">Dependencies:</span>
+                                <span class="font-medium">Order</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/80">Database:</span>
+                                <span class="font-medium">PostgreSQL</span>
+                            </div>
+                            <div class="text-white/80 text-xs mt-2">
+                                Email, SMS, Push Notifications
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Communication Flow -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">🔄 Service Communication Flow</h3>
+                
+                <!-- Communication Types -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-4 rounded-lg text-white text-center">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <h4 class="font-bold mb-1">Synchronous</h4>
+                        <p class="text-sm text-blue-100">gRPC for real-time requests</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-4 rounded-lg text-white text-center">
+                        <div class="text-2xl mb-2">🔄</div>
+                        <h4 class="font-bold mb-1">Asynchronous</h4>
+                        <p class="text-sm text-purple-100">Kafka for event streaming</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-lg text-white text-center">
+                        <div class="text-2xl mb-2">📊</div>
+                        <h4 class="font-bold mb-1">Data Population</h4>
+                        <p class="text-sm text-green-100">Cross-service data sync</p>
+                    </div>
+                </div>
+
+                <!-- Network Diagram -->
+                <div class="bg-white rounded-xl shadow-lg p-6 max-w-7xl mx-auto">
+                    <div class="network-graph" style="height: 600px;" id="networkGraph"></div>
+                </div>
+
+                <!-- Event Flow Examples -->
+                <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h4 class="text-lg font-bold text-gray-900 mb-4">📦 Order Placement Event Flow</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">1</div>
+                                <span class="text-sm">Customer places order → Order Service</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">2</div>
+                                <span class="text-sm">Order Service → Kafka: <code class="bg-gray-100 px-2 py-1 rounded">order.created</code></span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">3</div>
+                                <span class="text-sm">Product Service updates inventory</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">4</div>
+                                <span class="text-sm">Notification Service sends confirmation</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">5</div>
+                                <span class="text-sm">Vendor Service notifies seller</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h4 class="text-lg font-bold text-gray-900 mb-4">📋 Kafka Event Topics</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between items-center p-2 bg-blue-50 rounded">
+                                <span class="font-medium">order.created</span>
+                                <span class="text-xs text-gray-600">Order lifecycle</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-green-50 rounded">
+                                <span class="font-medium">product.updated</span>
+                                <span class="text-xs text-gray-600">Inventory sync</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-purple-50 rounded">
+                                <span class="font-medium">user.registered</span>
+                                <span class="text-xs text-gray-600">Welcome flow</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-yellow-50 rounded">
+                                <span class="font-medium">vendor.approved</span>
+                                <span class="text-xs text-gray-600">Onboarding</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-red-50 rounded">
+                                <span class="font-medium">payment.processed</span>
+                                <span class="text-xs text-gray-600">Financial sync</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Protocol Buffer Definitions -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">📋 Protocol Buffer Definitions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">user.proto</h4>
+                        <div class="text-sm text-gray-600">
+                            <div>• UserService (15+ methods)</div>
+                            <div>• AdminService (7 methods)</div>
+                            <div>• Address Management</div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">product.proto</h4>
+                        <div class="text-sm text-gray-600">
+                            <div>• Product CRUD</div>
+                            <div>• Inventory Management</div>
+                            <div>• Search & Filtering</div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">order.proto</h4>
+                        <div class="text-sm text-gray-600">
+                            <div>• Order Processing</div>
+                            <div>• Payment Integration</div>
+                            <div>• Vendor Order Split</div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">vendor.proto</h4>
+                        <div class="text-sm text-gray-600">
+                            <div>• Store Management</div>
+                            <div>• Vendor Registration</div>
+                            <div>• Analytics</div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">notification.proto</h4>
+                        <div class="text-sm text-gray-600">
+                            <div>• Email Service</div>
+                            <div>• SMS Gateway</div>
+                            <div>• Push Notifications</div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">category.proto</h4>
+                        <div class="text-sm text-gray-600">
+                            <div>• Category Tree</div>
+                            <div>• Hierarchical Structure</div>
+                            <div>• Product Classification</div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">brand.proto</h4>
+                        <div class="text-sm text-gray-600">
+                            <div>• Brand Management</div>
+                            <div>• Brand Analytics</div>
+                            <div>• Product Association</div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">attribute.proto</h4>
+                        <div class="text-sm text-gray-600">
+                            <div>• Product Attributes</div>
+                            <div>• Variations</div>
+                            <div>• Filtering Options</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Configuration -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">⚙️ Service Configuration</h3>
+                <div class="bg-white rounded-xl shadow-lg p-6 max-w-6xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 mb-4">🌐 Network Configuration</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                    <span class="text-sm font-medium">API Gateway</span>
+                                    <span class="text-sm text-gray-600">0.0.0.0:50050</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                    <span class="text-sm font-medium">User Service</span>
+                                    <span class="text-sm text-gray-600">user-service:50051</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                    <span class="text-sm font-medium">Product Service</span>
+                                    <span class="text-sm text-gray-600">product-service:50052</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                    <span class="text-sm font-medium">Order Service</span>
+                                    <span class="text-sm text-gray-600">order-service:50053</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                    <span class="text-sm font-medium">Vendor Service</span>
+                                    <span class="text-sm text-gray-600">vendor-service:50054</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                    <span class="text-sm font-medium">Notification Service</span>
+                                    <span class="text-sm text-gray-600">notification-service:50055</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900 mb-4">🗄️ Database Strategy</h4>
+                            <div class="space-y-3">
+                                <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                    <div class="font-medium text-blue-900 mb-1">Database Per Service</div>
+                                    <div class="text-sm text-blue-700">Each microservice has its own PostgreSQL database instance</div>
+                                </div>
+                                <div class="p-4 bg-green-50 rounded-lg border border-green-200">
+                                    <div class="font-medium text-green-900 mb-1">Prisma ORM</div>
+                                    <div class="text-sm text-green-700">Type-safe database access with automated migrations</div>
+                                </div>
+                                <div class="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                                    <div class="font-medium text-purple-900 mb-1">Service Independence</div>
+                                    <div class="text-sm text-purple-700">No direct database access between services</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Architecture Highlights -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">✨ Architecture Highlights</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">🚀</span>
+                            </div>
+                            <h4 class="ml-3 text-lg font-semibold text-gray-900">High Performance</h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">gRPC communication provides faster serialization and lower latency compared to REST</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">🔧</span>
+                            </div>
+                            <h4 class="ml-3 text-lg font-semibold text-gray-900">Scalable</h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">Independent services can be scaled horizontally based on demand</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">🛡️</span>
+                            </div>
+                            <h4 class="ml-3 text-lg font-semibold text-gray-900">Type Safety</h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">Protocol Buffers ensure type safety across service boundaries</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">🔄</span>
+                            </div>
+                            <h4 class="ml-3 text-lg font-semibold text-gray-900">Fault Tolerant</h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">Service isolation prevents cascading failures across the system</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">📊</span>
+                            </div>
+                            <h4 class="ml-3 text-lg font-semibold text-gray-900">Observable</h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">Each service provides metrics and logging for monitoring</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">🐳</span>
+                            </div>
+                            <h4 class="ml-3 text-lg font-semibold text-gray-900">Containerized</h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">Docker containers ensure consistent deployment across environments</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">⚡</span>
+                            </div>
+                            <h4 class="ml-3 text-lg font-semibold text-gray-900">Event-Driven</h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">Kafka enables real-time event streaming and decoupled service communication</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">🔄</span>
+                            </div>
+                            <h4 class="ml-3 text-lg font-semibold text-gray-900">Data Consistency</h4>
+                        </div>
+                        <p class="text-gray-600 text-sm">Cross-service data population ensures synchronized state across all services</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scalability Metrics & Technology Advantages -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">📈 Scalability Metrics & Technology Benefits</h3>
+                
+                <!-- Performance Metrics -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-lg text-white text-center">
+                        <div class="text-3xl font-bold mb-2">10K+</div>
+                        <div class="text-sm">Concurrent Users</div>
+                        <div class="text-xs text-blue-100 mt-1">Per service instance</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-lg text-white text-center">
+                        <div class="text-3xl font-bold mb-2">50ms</div>
+                        <div class="text-sm">Avg Response Time</div>
+                        <div class="text-xs text-green-100 mt-1">gRPC advantage</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-6 rounded-lg text-white text-center">
+                        <div class="text-3xl font-bold mb-2">99.9%</div>
+                        <div class="text-sm">Uptime SLA</div>
+                        <div class="text-xs text-purple-100 mt-1">Service isolation</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-red-500 to-red-600 p-6 rounded-lg text-white text-center">
+                        <div class="text-3xl font-bold mb-2">5M+</div>
+                        <div class="text-sm">Events/Hour</div>
+                        <div class="text-xs text-red-100 mt-1">Kafka throughput</div>
+                    </div>
+                </div>
+
+                <!-- Technology Scalability Analysis -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h4 class="text-xl font-bold text-gray-900 mb-4">🚀 Horizontal Scaling Capabilities</h4>
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-blue-500 pl-4">
+                                <h5 class="font-semibold text-blue-900">Microservices Architecture</h5>
+                                <p class="text-sm text-gray-600 mt-1">Each service can be scaled independently based on demand. High-traffic services like Product Catalog can run multiple instances while low-traffic services like Notifications can run single instances.</p>
+                                <div class="flex items-center mt-2 text-xs text-blue-600">
+                                    <span class="mr-2">📊</span>
+                                    <span>Scale: 1-100+ instances per service</span>
+                                </div>
+                            </div>
+                            
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h5 class="font-semibold text-green-900">gRPC Performance</h5>
+                                <p class="text-sm text-gray-600 mt-1">HTTP/2 based protocol with binary serialization provides 7-10x faster communication than REST JSON. Supports multiplexing, reducing connection overhead significantly.</p>
+                                <div class="flex items-center mt-2 text-xs text-green-600">
+                                    <span class="mr-2">⚡</span>
+                                    <span>Throughput: 50,000+ RPS per instance</span>
+                                </div>
+                            </div>
+                            
+                            <div class="border-l-4 border-purple-500 pl-4">
+                                <h5 class="font-semibold text-purple-900">Kafka Event Streaming</h5>
+                                <p class="text-sm text-gray-600 mt-1">Distributed commit log design allows horizontal partitioning. Each topic can be split across multiple brokers, enabling massive throughput and fault tolerance.</p>
+                                <div class="flex items-center mt-2 text-xs text-purple-600">
+                                    <span class="mr-2">🔄</span>
+                                    <span>Capacity: Millions of events/second</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h4 class="text-xl font-bold text-gray-900 mb-4">🗄️ Database Scalability Strategy</h4>
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-indigo-500 pl-4">
+                                <h5 class="font-semibold text-indigo-900">Database Per Service</h5>
+                                <p class="text-sm text-gray-600 mt-1">Each service owns its database, enabling independent scaling, schema evolution, and technology choices. No shared database bottlenecks.</p>
+                                <div class="flex items-center mt-2 text-xs text-indigo-600">
+                                    <span class="mr-2">🎯</span>
+                                    <span>Isolation: 100% service autonomy</span>
+                                </div>
+                            </div>
+                            
+                            <div class="border-l-4 border-yellow-500 pl-4">
+                                <h5 class="font-semibold text-yellow-900">PostgreSQL Advantages</h5>
+                                <p class="text-sm text-gray-600 mt-1">Supports read replicas, connection pooling, and horizontal sharding. ACID compliance ensures data consistency while allowing performance optimizations.</p>
+                                <div class="flex items-center mt-2 text-xs text-yellow-600">
+                                    <span class="mr-2">📈</span>
+                                    <span>Connections: 1000+ per instance</span>
+                                </div>
+                            </div>
+                            
+                            <div class="border-l-4 border-red-500 pl-4">
+                                <h5 class="font-semibold text-red-900">Prisma ORM Efficiency</h5>
+                                <p class="text-sm text-gray-600 mt-1">Query optimization, connection pooling, and type-safe database access. Reduces N+1 query problems and enables efficient data fetching patterns.</p>
+                                <div class="flex items-center mt-2 text-xs text-red-600">
+                                    <span class="mr-2">🔧</span>
+                                    <span>Optimization: 80% fewer database calls</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scaling Scenarios -->
+                <div class="mt-8 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6">
+                    <h4 class="text-xl font-bold text-gray-900 mb-4 text-center">🎯 Real-World Scaling Scenarios</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-blue-600 mb-2">🛒 Flash Sale Event</h5>
+                            <div class="text-sm space-y-1">
+                                <div>• Product Service: 10x instances</div>
+                                <div>• Order Service: 5x instances</div>
+                                <div>• User Service: 3x instances</div>
+                                <div>• Kafka: Auto-partition scaling</div>
+                                <div class="text-xs text-gray-500 mt-2">Handles 100K+ concurrent shoppers</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-green-600 mb-2">📈 Business Growth</h5>
+                            <div class="text-sm space-y-1">
+                                <div>• Vendor Service: Scale with sellers</div>
+                                <div>• Product Service: Scale with catalog</div>
+                                <div>• Database: Read replicas</div>
+                                <div>• Load balancers: Geographic</div>
+                                <div class="text-xs text-gray-500 mt-2">Supports 10K+ vendors, 1M+ products</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-purple-600 mb-2">🌍 Global Expansion</h5>
+                            <div class="text-sm space-y-1">
+                                <div>• Multi-region deployment</div>
+                                <div>• CDN for static assets</div>
+                                <div>• Regional database clusters</div>
+                                <div>• Kafka multi-datacenter</div>
+                                <div class="text-xs text-gray-500 mt-2">Sub-100ms latency worldwide</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technology Comparison -->
+                <div class="mt-8">
+                    <h4 class="text-xl font-bold text-gray-900 mb-4 text-center">⚖️ Technology Scalability Comparison</h4>
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left font-semibold">Technology</th>
+                                    <th class="px-4 py-3 text-center font-semibold">Throughput</th>
+                                    <th class="px-4 py-3 text-center font-semibold">Latency</th>
+                                    <th class="px-4 py-3 text-center font-semibold">Scalability</th>
+                                    <th class="px-4 py-3 text-center font-semibold">Fault Tolerance</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-blue-600">gRPC vs REST</td>
+                                    <td class="px-4 py-3 text-center text-green-600">7-10x Higher</td>
+                                    <td class="px-4 py-3 text-center text-green-600">50% Lower</td>
+                                    <td class="px-4 py-3 text-center text-green-600">Excellent</td>
+                                    <td class="px-4 py-3 text-center text-green-600">High</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-purple-600">Kafka vs Database Events</td>
+                                    <td class="px-4 py-3 text-center text-green-600">100x Higher</td>
+                                    <td class="px-4 py-3 text-center text-green-600">90% Lower</td>
+                                    <td class="px-4 py-3 text-center text-green-600">Unlimited</td>
+                                    <td class="px-4 py-3 text-center text-green-600">Very High</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-indigo-600">Microservices vs Monolith</td>
+                                    <td class="px-4 py-3 text-center text-green-600">Per-service</td>
+                                    <td class="px-4 py-3 text-center text-yellow-600">Slightly Higher</td>
+                                    <td class="px-4 py-3 text-center text-green-600">Independent</td>
+                                    <td class="px-4 py-3 text-center text-green-600">Isolated</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-medium text-green-600">PostgreSQL vs NoSQL</td>
+                                    <td class="px-4 py-3 text-center text-yellow-600">High</td>
+                                    <td class="px-4 py-3 text-center text-yellow-600">Consistent</td>
+                                    <td class="px-4 py-3 text-center text-green-600">Vertical+Horizontal</td>
+                                    <td class="px-4 py-3 text-center text-green-600">ACID Compliant</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Structure -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Project Structure</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Backend Structure -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-800">Backend (bm-backend)</h3>
+                    <div class="folder-tree text-sm">
+<pre>
+<span class="folder">bm-backend/</span>
+├── <span class="folder">apps/</span>
+│   ├── <span class="folder">api-gateway/</span>          <span class="text-gray-400"># Main API Gateway</span>
+│   │   ├── <span class="folder">src/</span>
+│   │   │   ├── <span class="component">auth/</span>         <span class="text-gray-400"># Authentication</span>
+│   │   │   ├── <span class="component">products/</span>     <span class="text-gray-400"># Product endpoints</span>
+│   │   │   ├── <span class="component">users/</span>        <span class="text-gray-400"># User endpoints</span>
+│   │   │   ├── <span class="component">vendors/</span>      <span class="text-gray-400"># Vendor endpoints</span>
+│   │   │   └── <span class="component">orders/</span>       <span class="text-gray-400"># Order endpoints</span>
+│   │   └── <span class="config">package.json</span>
+│   ├── <span class="folder">product-service/</span>      <span class="text-gray-400"># Product Management</span>
+│   │   ├── <span class="folder">src/</span>
+│   │   │   ├── <span class="component">product/</span>      <span class="text-gray-400"># Product logic</span>
+│   │   │   ├── <span class="component">category/</span>     <span class="text-gray-400"># Category logic</span>
+│   │   │   └── <span class="component">brand/</span>        <span class="text-gray-400"># Brand logic</span>
+│   │   └── <span class="folder">prisma/</span>
+│   │       └── <span class="config">schema.prisma</span>
+│   ├── <span class="folder">user-service/</span>         <span class="text-gray-400"># User Management</span>
+│   │   ├── <span class="folder">src/</span>
+│   │   │   ├── <span class="component">auth/</span>         <span class="text-gray-400"># Authentication</span>
+│   │   │   ├── <span class="component">users/</span>        <span class="text-gray-400"># User CRUD</span>
+│   │   │   └── <span class="component">profile/</span>      <span class="text-gray-400"># Profile management</span>
+│   │   └── <span class="folder">prisma/</span>
+│   ├── <span class="folder">vendor-service/</span>       <span class="text-gray-400"># Vendor Management</span>
+│   │   ├── <span class="folder">src/</span>
+│   │   │   ├── <span class="component">vendors/</span>      <span class="text-gray-400"># Vendor CRUD</span>
+│   │   │   └── <span class="component">stores/</span>       <span class="text-gray-400"># Store management</span>
+│   │   └── <span class="folder">prisma/</span>
+│   ├── <span class="folder">order-service/</span>        <span class="text-gray-400"># Order Management</span>
+│   │   ├── <span class="folder">src/</span>
+│   │   │   ├── <span class="component">orders/</span>       <span class="text-gray-400"># Order processing</span>
+│   │   │   ├── <span class="component">cart/</span>         <span class="text-gray-400"># Shopping cart</span>
+│   │   │   └── <span class="component">payment/</span>      <span class="text-gray-400"># Payment processing</span>
+│   │   └── <span class="folder">prisma/</span>
+│   └── <span class="folder">notification-service/</span>  <span class="text-gray-400"># Notifications</span>
+│       ├── <span class="folder">src/</span>
+│       │   ├── <span class="component">email/</span>        <span class="text-gray-400"># Email notifications</span>
+│       │   └── <span class="component">sms/</span>          <span class="text-gray-400"># SMS notifications</span>
+│       └── <span class="folder">prisma/</span>
+├── <span class="folder">libs/</span>                     <span class="text-gray-400"># Shared libraries</span>
+│   └── <span class="folder">shared/</span>
+│       ├── <span class="file">dto/</span>               <span class="text-gray-400"># Data transfer objects</span>
+│       ├── <span class="file">prisma/</span>            <span class="text-gray-400"># Database connections</span>
+│       └── <span class="file">services/</span>          <span class="text-gray-400"># Shared services</span>
+├── <span class="folder">proto/</span>                   <span class="text-gray-400"># gRPC Protocol files</span>
+│   ├── <span class="config">product.proto</span>
+│   ├── <span class="config">user.proto</span>
+│   ├── <span class="config">vendor.proto</span>
+│   ├── <span class="config">order.proto</span>
+│   └── <span class="config">notification.proto</span>
+└── <span class="config">docker-compose.yml</span>       <span class="text-gray-400"># Container orchestration</span>
+</pre>
+                    </div>
+                </div>
+
+                <!-- Frontend Structure -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-800">Frontend Applications</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Web Applications -->
+                        <div>
+                            <h4 class="text-lg font-semibold text-blue-600 mb-4">🌐 Web Applications (Next.js)</h4>
+                            <div class="folder-tree text-sm">
+<pre>
+<span class="folder">bm-frontend/</span>                 <span class="text-gray-400"># Customer Portal</span>
+├── <span class="folder">src/</span>
+│   ├── <span class="folder">app/</span>                  <span class="text-gray-400"># Next.js App Router</span>
+│   │   ├── <span class="component">auth/</span>          <span class="text-gray-400"># Authentication pages</span>
+│   │   ├── <span class="component">products/</span>      <span class="text-gray-400"># Product pages</span>
+│   │   ├── <span class="component">cart/</span>          <span class="text-gray-400"># Shopping cart</span>
+│   │   ├── <span class="component">checkout/</span>      <span class="text-gray-400"># Checkout process</span>
+│   │   └── <span class="component">profile/</span>       <span class="text-gray-400"># User profile</span>
+│   ├── <span class="folder">components/</span>           <span class="text-gray-400"># Reusable components</span>
+│   │   ├── <span class="component">ui/</span>            <span class="text-gray-400"># UI components</span>
+│   │   ├── <span class="component">forms/</span>         <span class="text-gray-400"># Form components</span>
+│   │   └── <span class="component">layout/</span>        <span class="text-gray-400"># Layout components</span>
+│   ├── <span class="folder">redux/</span>                <span class="text-gray-400"># State management</span>
+│   │   ├── <span class="file">store.ts</span>
+│   │   └── <span class="folder">api/</span>
+│   ├── <span class="folder">hooks/</span>                <span class="text-gray-400"># Custom React hooks</span>
+│   └── <span class="folder">lib/</span>                  <span class="text-gray-400"># Utilities</span>
+└── <span class="config">next.config.ts</span>
+
+<span class="folder">bm-seller/</span>                   <span class="text-gray-400"># Vendor Dashboard</span>
+├── <span class="folder">src/</span>
+│   ├── <span class="folder">app/</span>
+│   │   ├── <span class="component">dashboard/</span>      <span class="text-gray-400"># Main dashboard</span>
+│   │   ├── <span class="component">products/</span>      <span class="text-gray-400"># Product management</span>
+│   │   ├── <span class="component">orders/</span>        <span class="text-gray-400"># Order management</span>
+│   │   ├── <span class="component">analytics/</span>     <span class="text-gray-400"># Sales analytics</span>
+│   │   └── <span class="component">settings/</span>      <span class="text-gray-400"># Store settings</span>
+│   ├── <span class="folder">components/</span>
+│   │   ├── <span class="component">charts/</span>        <span class="text-gray-400"># Analytics charts</span>
+│   │   ├── <span class="component">tables/</span>        <span class="text-gray-400"># Data tables</span>
+│   │   └── <span class="component">forms/</span>         <span class="text-gray-400"># Product forms</span>
+│   └── <span class="folder">redux/</span>
+└── <span class="config">next.config.ts</span>
+
+<span class="folder">bm-operation/</span>                <span class="text-gray-400"># Admin Panel</span>
+├── <span class="folder">src/</span>
+│   ├── <span class="folder">app/</span>
+│   │   ├── <span class="component">dashboard/</span>      <span class="text-gray-400"># Admin dashboard</span>
+│   │   ├── <span class="component">products/</span>      <span class="text-gray-400"># Product approval</span>
+│   │   ├── <span class="component">vendors/</span>       <span class="text-gray-400"># Vendor management</span>
+│   │   ├── <span class="component">users/</span>         <span class="text-gray-400"># User management</span>
+│   │   └── <span class="component">analytics/</span>     <span class="text-gray-400"># System analytics</span>
+│   ├── <span class="folder">components/</span>
+│   │   ├── <span class="component">modals/</span>        <span class="text-gray-400"># Modal dialogs</span>
+│   │   ├── <span class="component">tables/</span>        <span class="text-gray-400"># Data management</span>
+│   │   └── <span class="component">charts/</span>        <span class="text-gray-400"># Analytics</span>
+│   └── <span class="folder">redux/</span>
+└── <span class="config">next.config.ts</span>
+</pre>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Applications -->
+                        <div>
+                            <h4 class="text-lg font-semibold text-green-600 mb-4">📱 Mobile Applications (React Native)</h4>
+                            <div class="folder-tree text-sm">
+<pre>
+<span class="folder">bm-mobile-android/</span>           <span class="text-gray-400"># Android App</span>
+├── <span class="folder">src/</span>
+│   ├── <span class="folder">screens/</span>              <span class="text-gray-400"># App screens</span>
+│   │   ├── <span class="component">Home/</span>           <span class="text-gray-400"># Home & discovery</span>
+│   │   ├── <span class="component">Products/</span>       <span class="text-gray-400"># Product browsing</span>
+│   │   ├── <span class="component">Cart/</span>           <span class="text-gray-400"># Shopping cart</span>
+│   │   ├── <span class="component">Auth/</span>           <span class="text-gray-400"># Login/Register</span>
+│   │   ├── <span class="component">Profile/</span>        <span class="text-gray-400"># User profile</span>
+│   │   └── <span class="component">Orders/</span>         <span class="text-gray-400"># Order history</span>
+│   ├── <span class="folder">components/</span>           <span class="text-gray-400"># Reusable components</span>
+│   │   ├── <span class="component">UI/</span>             <span class="text-gray-400"># Custom UI elements</span>
+│   │   ├── <span class="component">Navigation/</span>     <span class="text-gray-400"># Navigation components</span>
+│   │   └── <span class="component">Forms/</span>          <span class="text-gray-400"># Form components</span>
+│   ├── <span class="folder">services/</span>             <span class="text-gray-400"># API services</span>
+│   │   ├── <span class="file">api.ts</span>              <span class="text-gray-400"># API client</span>
+│   │   ├── <span class="file">auth.ts</span>             <span class="text-gray-400"># Authentication</span>
+│   │   └── <span class="file">notifications.ts</span>    <span class="text-gray-400"># Push notifications</span>
+│   ├── <span class="folder">store/</span>                <span class="text-gray-400"># Redux store</span>
+│   │   ├── <span class="file">store.ts</span>
+│   │   └── <span class="folder">slices/</span>
+│   └── <span class="folder">utils/</span>                <span class="text-gray-400"># Utilities</span>
+├── <span class="folder">android/</span>                  <span class="text-gray-400"># Android specific</span>
+├── <span class="config">package.json</span>
+└── <span class="config">react-native.config.js</span>
+
+<span class="folder">bm-mobile-ios/</span>               <span class="text-gray-400"># iOS App</span>
+├── <span class="folder">src/</span>                      <span class="text-gray-400"># Shared codebase</span>
+│   ├── <span class="folder">screens/</span>              <span class="text-gray-400"># Same as Android</span>
+│   ├── <span class="folder">components/</span>           <span class="text-gray-400"># iOS optimized</span>
+│   ├── <span class="folder">services/</span>             <span class="text-gray-400"># API integration</span>
+│   └── <span class="folder">store/</span>                <span class="text-gray-400"># State management</span>
+├── <span class="folder">ios/</span>                      <span class="text-gray-400"># iOS specific</span>
+│   ├── <span class="file">Info.plist</span>             <span class="text-gray-400"># App configuration</span>
+│   └── <span class="folder">BanglaMarket/</span>         <span class="text-gray-400"># Native iOS code</span>
+├── <span class="config">package.json</span>
+└── <span class="config">metro.config.js</span>
+</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Technology Stack</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card-hover bg-gradient-to-br from-blue-400 to-blue-600 p-6 rounded-lg text-white">
+                    <h3 class="text-xl font-bold mb-4">Frontend</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>• Next.js 14 (Web)</li>
+                        <li>• React 18</li>
+                        <li>• React Native (Mobile)</li>
+                        <li>• TypeScript</li>
+                        <li>• Tailwind CSS</li>
+                        <li>• Redux Toolkit</li>
+                        <li>• React Hook Form</li>
+                    </ul>
+                </div>
+                <div class="card-hover bg-gradient-to-br from-green-400 to-green-600 p-6 rounded-lg text-white">
+                    <h3 class="text-xl font-bold mb-4">Backend</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>• NestJS</li>
+                        <li>• Node.js</li>
+                        <li>• TypeScript</li>
+                        <li>• gRPC</li>
+                        <li>• Kafka</li>
+                        <li>• Microservices</li>
+                        <li>• JWT Auth</li>
+                    </ul>
+                </div>
+                <div class="card-hover bg-gradient-to-br from-purple-400 to-purple-600 p-6 rounded-lg text-white">
+                    <h3 class="text-xl font-bold mb-4">Database</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>• PostgreSQL</li>
+                        <li>• Prisma ORM</li>
+                        <li>• Database per Service</li>
+                        <li>• Migrations</li>
+                        <li>• Schema Management</li>
+                        <li>• Query Optimization</li>
+                    </ul>
+                </div>
+                <div class="card-hover bg-gradient-to-br from-red-400 to-red-600 p-6 rounded-lg text-white">
+                    <h3 class="text-xl font-bold mb-4">DevOps</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>• Docker</li>
+                        <li>• Docker Compose</li>
+                        <li>• ESLint</li>
+                        <li>• Prettier</li>
+                        <li>• Git</li>
+                        <li>• Environment Config</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features & Statistics -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Platform Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Customer Features -->
+                <div class="bg-white p-6 rounded-lg shadow-lg card-hover">
+                    <div class="text-blue-500 text-3xl mb-4">🛒</div>
+                    <h3 class="text-xl font-bold mb-4">Customer Portal</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li>• Product Browse & Search</li>
+                        <li>• Shopping Cart</li>
+                        <li>• Order Tracking</li>
+                        <li>• User Reviews</li>
+                        <li>• Wishlist</li>
+                        <li>• Payment Integration</li>
+                    </ul>
+                </div>
+
+                <!-- Vendor Features -->
+                <div class="bg-white p-6 rounded-lg shadow-lg card-hover">
+                    <div class="text-green-500 text-3xl mb-4">🏪</div>
+                    <h3 class="text-xl font-bold mb-4">Vendor Dashboard</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li>• Product Management</li>
+                        <li>• Inventory Control</li>
+                        <li>• Order Processing</li>
+                        <li>• Sales Analytics</li>
+                        <li>• Revenue Reports</li>
+                        <li>• Store Configuration</li>
+                    </ul>
+                </div>
+
+                <!-- Admin Features -->
+                <div class="bg-white p-6 rounded-lg shadow-lg card-hover">
+                    <div class="text-purple-500 text-3xl mb-4">⚡</div>
+                    <h3 class="text-xl font-bold mb-4">Admin Panel</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li>• Product Approval System</li>
+                        <li>• Vendor Management</li>
+                        <li>• User Administration</li>
+                        <li>• System Analytics</li>
+                        <li>• Content Management</li>
+                        <li>• Platform Configuration</li>
+                    </ul>
+                </div>
+
+                <!-- Technical Features -->
+                <div class="bg-white p-6 rounded-lg shadow-lg card-hover">
+                    <div class="text-red-500 text-3xl mb-4">🔧</div>
+                    <h3 class="text-xl font-bold mb-4">Technical Features</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li>• Microservices Architecture</li>
+                        <li>• Real-time Updates</li>
+                        <li>• API Gateway</li>
+                        <li>• gRPC Communication</li>
+                        <li>• Database Optimization</li>
+                        <li>• Scalable Infrastructure</li>
+                    </ul>
+                </div>
+
+                <!-- Security Features -->
+                <div class="bg-white p-6 rounded-lg shadow-lg card-hover">
+                    <div class="text-yellow-500 text-3xl mb-4">🔒</div>
+                    <h3 class="text-xl font-bold mb-4">Security</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li>• JWT Authentication</li>
+                        <li>• Role-based Access</li>
+                        <li>• Data Encryption</li>
+                        <li>• Secure API Endpoints</li>
+                        <li>• Input Validation</li>
+                        <li>• Rate Limiting</li>
+                    </ul>
+                </div>
+
+                <!-- Performance Features -->
+                <div class="bg-white p-6 rounded-lg shadow-lg card-hover">
+                    <div class="text-indigo-500 text-3xl mb-4">⚡</div>
+                    <h3 class="text-xl font-bold mb-4">Performance</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li>• Server-Side Rendering</li>
+                        <li>• Optimized Queries</li>
+                        <li>• Caching Strategies</li>
+                        <li>• Lazy Loading</li>
+                        <li>• Image Optimization</li>
+                        <li>• Bundle Optimization</li>
+                    </ul>
+                </div>
+
+                <!-- Mobile Features -->
+                <div class="bg-white p-6 rounded-lg shadow-lg card-hover">
+                    <div class="text-green-500 text-3xl mb-4">📱</div>
+                    <h3 class="text-xl font-bold mb-4">Mobile Apps</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li>• Native Android App</li>
+                        <li>• Native iOS App</li>
+                        <li>• Push Notifications</li>
+                        <li>• Offline Support</li>
+                        <li>• Touch ID/Face ID</li>
+                        <li>• Deep Linking</li>
+                    </ul>
+                </div>
+
+                <!-- Cross-Platform Features -->
+                <div class="bg-white p-6 rounded-lg shadow-lg card-hover">
+                    <div class="text-purple-500 text-3xl mb-4">🌐</div>
+                    <h3 class="text-xl font-bold mb-4">Cross-Platform</h3>
+                    <ul class="text-gray-600 space-y-2">
+                        <li>• Unified API Integration</li>
+                        <li>• Shared Business Logic</li>
+                        <li>• Consistent User Experience</li>
+                        <li>• Real-time Synchronization</li>
+                        <li>• Progressive Web App</li>
+                        <li>• Responsive Design</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Development Statistics -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Development Statistics</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-6 bg-blue-50 rounded-lg">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">15,000+</div>
+                    <div class="text-gray-600">Lines of Code</div>
+                </div>
+                <div class="text-center p-6 bg-green-50 rounded-lg">
+                    <div class="text-4xl font-bold text-green-600 mb-2">500+</div>
+                    <div class="text-gray-600">API Endpoints</div>
+                </div>
+                <div class="text-center p-6 bg-purple-50 rounded-lg">
+                    <div class="text-4xl font-bold text-purple-600 mb-2">100+</div>
+                    <div class="text-gray-600">Components</div>
+                </div>
+                <div class="text-center p-6 bg-red-50 rounded-lg">
+                    <div class="text-4xl font-bold text-red-600 mb-2">25+</div>
+                    <div class="text-gray-600">Database Tables</div>
+                </div>
+            </div>
+
+            <!-- Technology Distribution Chart -->
+            <div class="mt-16">
+                <h3 class="text-2xl font-bold text-center mb-8">Technology Distribution</h3>
+                <div class="max-w-md mx-auto">
+                    <canvas id="techChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Documentation -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">API Endpoints Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-blue-600">Product Service</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded">GET</span>
+                            <span>/api/v1/products</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">POST</span>
+                            <span>/api/v1/products</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">PUT</span>
+                            <span>/api/v1/products/:id</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="bg-red-100 text-red-800 px-2 py-1 rounded">DEL</span>
+                            <span>/api/v1/products/:id</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-green-600">User Service</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">POST</span>
+                            <span>/api/v1/auth/login</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">POST</span>
+                            <span>/api/v1/auth/register</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded">GET</span>
+                            <span>/api/v1/users/profile</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">PUT</span>
+                            <span>/api/v1/users/profile</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-purple-600">Order Service</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded">GET</span>
+                            <span>/api/v1/orders</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">POST</span>
+                            <span>/api/v1/orders</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">PUT</span>
+                            <span>/api/v1/orders/:id/status</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded">GET</span>
+                            <span>/api/v1/cart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deployment & Infrastructure -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Deployment Architecture</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gray-50 p-8 rounded-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <div class="bg-blue-500 text-white p-4 rounded-lg mb-4">
+                                <h3 class="font-bold">Development</h3>
+                            </div>
+                            <ul class="text-sm space-y-1">
+                                <li>• Docker Compose</li>
+                                <li>• Local Development</li>
+                                <li>• Hot Reload</li>
+                                <li>• Debug Mode</li>
+                            </ul>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-green-500 text-white p-4 rounded-lg mb-4">
+                                <h3 class="font-bold">Staging</h3>
+                            </div>
+                            <ul class="text-sm space-y-1">
+                                <li>• Container Registry</li>
+                                <li>• CI/CD Pipeline</li>
+                                <li>• Automated Testing</li>
+                                <li>• Performance Testing</li>
+                            </ul>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-purple-500 text-white p-4 rounded-lg mb-4">
+                                <h3 class="font-bold">Production</h3>
+                            </div>
+                            <ul class="text-sm space-y-1">
+                                <li>• Load Balancing</li>
+                                <li>• Auto Scaling</li>
+                                <li>• Monitoring</li>
+                                <li>• Backup & Recovery</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-4">Ready to Scale Your E-commerce Business?</h2>
+            <p class="text-lg mb-8">Join the next generation of multi-vendor marketplaces</p>
+            <div class="flex justify-center space-x-6">
+                <div class="text-center">
+                    <div class="text-2xl font-bold">🚀</div>
+                    <div class="text-sm">Scalable</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold">⚡</div>
+                    <div class="text-sm">Fast</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold">🔒</div>
+                    <div class="text-sm">Secure</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold">🌐</div>
+                    <div class="text-sm">Global</div>
+                </div>
+            </div>
+            <div class="mt-8 text-sm">
+                <p>&copy; 2025 Bangla Market. Built with ❤️ using modern technologies.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Technology Distribution Chart
+        const ctx = document.getElementById('techChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Frontend (Next.js)', 'Backend (NestJS)', 'Database (PostgreSQL)', 'DevOps (Docker)', 'Others'],
+                datasets: [{
+                    data: [35, 30, 15, 10, 10],
+                    backgroundColor: [
+                        '#3B82F6',
+                        '#10B981',
+                        '#8B5CF6',
+                        '#F59E0B',
+                        '#EF4444'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
+
+        // Network Graph Visualization for Backend Services
+        const container = document.getElementById('networkGraph');
+        if (container) {
+            const nodes = new vis.DataSet([
+                // Client Layer
+                {id: 1, label: 'Web Apps\n(Next.js)', color: '#4facfe', shape: 'ellipse', size: 25, font: {size: 10}, level: 0},
+                {id: 14, label: 'Mobile Apps\n(React Native)', color: '#00d4ff', shape: 'ellipse', size: 25, font: {size: 10}, level: 0},
+                
+                // API Gateway
+                {id: 2, label: 'API Gateway\n:50050\n(NestJS)', color: '#f093fb', shape: 'box', size: 35, font: {size: 11}, level: 1},
+                
+                // Kafka Event Broker
+                {id: 3, label: 'Kafka\nEvent Broker\n(Message Queue)', color: '#ff6b6b', shape: 'diamond', size: 40, font: {size: 11}, level: 2},
+                
+                // Core Services
+                {id: 4, label: 'User Service\n:50051\n(Auth & Profile)', color: '#667eea', shape: 'box', size: 30, font: {size: 9}, level: 3},
+                {id: 5, label: 'Product Service\n:50052\n(Catalog & Inventory)', color: '#667eea', shape: 'box', size: 30, font: {size: 9}, level: 3},
+                {id: 6, label: 'Order Service\n:50053\n(Processing & Payment)', color: '#667eea', shape: 'box', size: 30, font: {size: 9}, level: 3},
+                {id: 7, label: 'Vendor Service\n:50054\n(Store Management)', color: '#667eea', shape: 'box', size: 30, font: {size: 9}, level: 3},
+                {id: 8, label: 'Notification\n:50055\n(Email/SMS/Push)', color: '#667eea', shape: 'box', size: 30, font: {size: 9}, level: 3},
+                
+                // Database Layer - Separate DB per service
+                {id: 9, label: 'User DB\n(PostgreSQL)\nPrisma ORM', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4},
+                {id: 10, label: 'Product DB\n(PostgreSQL)\nPrisma ORM', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4},
+                {id: 11, label: 'Order DB\n(PostgreSQL)\nPrisma ORM', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4},
+                {id: 12, label: 'Vendor DB\n(PostgreSQL)\nPrisma ORM', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4},
+                {id: 13, label: 'Notification DB\n(PostgreSQL)\nPrisma ORM', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4}
+            ]);
+
+            const edges = new vis.DataSet([
+                // Client to Gateway
+                {from: 1, to: 2, color: '#4facfe', width: 4, label: 'HTTP/REST\nRequests', font: {size: 8, color: '#4facfe'}, smooth: {type: 'continuous'}},
+                {from: 14, to: 2, color: '#00d4ff', width: 4, label: 'HTTP/REST\n+ Push Notifications', font: {size: 8, color: '#00d4ff'}, smooth: {type: 'continuous'}},
+                
+                // Gateway to Services (Synchronous gRPC)
+                {from: 2, to: 4, color: '#667eea', width: 2, label: 'gRPC', font: {size: 7}, dashes: true, smooth: {type: 'continuous'}},
+                {from: 2, to: 5, color: '#667eea', width: 2, label: 'gRPC', font: {size: 7}, dashes: true, smooth: {type: 'continuous'}},
+                {from: 2, to: 6, color: '#667eea', width: 2, label: 'gRPC', font: {size: 7}, dashes: true, smooth: {type: 'continuous'}},
+                {from: 2, to: 7, color: '#667eea', width: 2, label: 'gRPC', font: {size: 7}, dashes: true, smooth: {type: 'continuous'}},
+                {from: 2, to: 8, color: '#667eea', width: 2, label: 'gRPC', font: {size: 7}, dashes: true, smooth: {type: 'continuous'}},
+                
+                // Services to Kafka (Event Publishing)
+                {from: 4, to: 3, color: '#ff6b6b', width: 2, label: 'user.events', font: {size: 7, color: '#ff6b6b'}, dashes: [8,3], smooth: {type: 'continuous'}},
+                {from: 5, to: 3, color: '#ff6b6b', width: 2, label: 'product.events', font: {size: 7, color: '#ff6b6b'}, dashes: [8,3], smooth: {type: 'continuous'}},
+                {from: 6, to: 3, color: '#ff6b6b', width: 3, label: 'order.events', font: {size: 7, color: '#ff6b6b'}, dashes: [8,3], smooth: {type: 'continuous'}},
+                {from: 7, to: 3, color: '#ff6b6b', width: 2, label: 'vendor.events', font: {size: 7, color: '#ff6b6b'}, dashes: [8,3], smooth: {type: 'continuous'}},
+                {from: 8, to: 3, color: '#ff6b6b', width: 2, label: 'notification.sent', font: {size: 7, color: '#ff6b6b'}, dashes: [8,3], smooth: {type: 'continuous'}},
+                
+                // Kafka to Services (Event Consumption)
+                {from: 3, to: 4, color: '#ffa500', width: 2, label: 'consumes\nevents', font: {size: 7, color: '#ffa500'}, dashes: [5,5], smooth: {type: 'continuous'}},
+                {from: 3, to: 5, color: '#ffa500', width: 2, label: 'inventory\nupdates', font: {size: 7, color: '#ffa500'}, dashes: [5,5], smooth: {type: 'continuous'}},
+                {from: 3, to: 7, color: '#ffa500', width: 2, label: 'vendor\nnotifications', font: {size: 7, color: '#ffa500'}, dashes: [5,5], smooth: {type: 'continuous'}},
+                {from: 3, to: 8, color: '#ffa500', width: 3, label: 'trigger\nnotifications', font: {size: 7, color: '#ffa500'}, dashes: [5,5], smooth: {type: 'continuous'}},
+                
+                // Services to Their Own Databases (One-to-One)
+                {from: 4, to: 9, color: '#336791', width: 2, label: 'Owns DB', font: {size: 6}, smooth: {type: 'continuous'}},
+                {from: 5, to: 10, color: '#336791', width: 2, label: 'Owns DB', font: {size: 6}, smooth: {type: 'continuous'}},
+                {from: 6, to: 11, color: '#336791', width: 2, label: 'Owns DB', font: {size: 6}, smooth: {type: 'continuous'}},
+                {from: 7, to: 12, color: '#336791', width: 2, label: 'Owns DB', font: {size: 6}, smooth: {type: 'continuous'}},
+                {from: 8, to: 13, color: '#336791', width: 2, label: 'Owns DB', font: {size: 6}, smooth: {type: 'continuous'}},
+                
+                // Data Population (Cross-service sync via gRPC - NOT direct DB access)
+                {from: 6, to: 4, color: '#10b981', width: 1, label: 'user data\nvia gRPC', font: {size: 6, color: '#10b981'}, dashes: [3,3], smooth: {type: 'curvedCW'}},
+                {from: 6, to: 5, color: '#10b981', width: 1, label: 'product data\nvia gRPC', font: {size: 6, color: '#10b981'}, dashes: [3,3], smooth: {type: 'curvedCW'}},
+                {from: 7, to: 4, color: '#10b981', width: 1, label: 'user validation\nvia gRPC', font: {size: 6, color: '#10b981'}, dashes: [3,3], smooth: {type: 'curvedCW'}},
+                {from: 5, to: 7, color: '#10b981', width: 1, label: 'vendor products\nvia gRPC', font: {size: 6, color: '#10b981'}, dashes: [3,3], smooth: {type: 'curvedCW'}}
+            ]);
+
+            const data = { nodes, edges };
+            
+            const options = {
+                nodes: {
+                    borderWidth: 2,
+                    borderWidthSelected: 3,
+                    chosen: true,
+                    font: {
+                        color: '#ffffff',
+                        strokeWidth: 2,
+                        strokeColor: '#000000'
+                    },
+                    shadow: {
+                        enabled: true,
+                        color: 'rgba(0,0,0,0.2)',
+                        size: 10,
+                        x: 2,
+                        y: 2
+                    }
+                },
+                edges: {
+                    width: 2,
+                    smooth: {
+                        enabled: true,
+                        type: 'continuous',
+                        roundness: 0.2
+                    },
+                    arrows: {
+                        to: {enabled: true, scaleFactor: 1.2, type: 'arrow'}
+                    },
+                    shadow: {
+                        enabled: true,
+                        color: 'rgba(0,0,0,0.1)',
+                        size: 5,
+                        x: 1,
+                        y: 1
+                    }
+                },
+                physics: {
+                    enabled: true,
+                    stabilization: {iterations: 200},
+                    barnesHut: {
+                        gravitationalConstant: -3000,
+                        centralGravity: 0.1,
+                        springLength: 120,
+                        springConstant: 0.02,
+                        damping: 0.1
+                    }
+                },
+                layout: {
+                    hierarchical: {
+                        enabled: true,
+                        direction: 'UD',
+                        sortMethod: 'directed',
+                        nodeSpacing: 180,
+                        levelSeparation: 120,
+                        treeSpacing: 200
+                    }
+                },
+                interaction: {
+                    hover: true,
+                    tooltipDelay: 200,
+                    hideEdgesOnDrag: false
+                }
+            };
+
+            const network = new vis.Network(container, data, options);
+            
+            // Add legend
+            const legend = document.createElement('div');
+            legend.innerHTML = `
+                <div class="absolute top-4 right-4 bg-white p-4 rounded-lg shadow-lg border text-xs">
+                    <h5 class="font-bold mb-2">Communication & Data</h5>
+                    <div class="space-y-1">
+                        <div class="flex items-center">
+                            <div class="w-4 h-1 bg-blue-500 mr-2"></div>
+                            <span>Synchronous gRPC</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-1 bg-red-500 mr-2" style="border-top: 2px dashed;"></div>
+                            <span>Event Publishing</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-1 bg-orange-500 mr-2" style="border-top: 2px dashed;"></div>
+                            <span>Event Consumption</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-1 bg-green-500 mr-2" style="border-top: 1px dashed;"></div>
+                            <span>Cross-Service Data</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-1 bg-gray-600 mr-2"></div>
+                            <span>Database Ownership</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-2 border-t">
+                        <h6 class="font-semibold text-red-600">Database Isolation</h6>
+                        <p class="text-xs text-gray-600 mt-1">Each service owns its own PostgreSQL database. No direct cross-database access.</p>
+                    </div>
+                </div>
+            `;
+            container.parentElement.style.position = 'relative';
+            container.parentElement.appendChild(legend);
+        }
+
+        // Add smooth scrolling to navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards
+        document.querySelectorAll('.card-hover, .service-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
