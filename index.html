@@ -65,6 +65,105 @@
             border-radius: 12px;
             background: #f9fafb;
         }
+        
+        /* Animated Request Flow Styles */
+        .service-node {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            z-index: 15;
+        }
+        
+        .service-node.active {
+            transform: scale(1.15) translateY(-4px);
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4), 0 0 0 4px rgba(59, 130, 246, 0.2);
+            z-index: 25;
+        }
+        
+        .service-node.processing {
+            animation: serviceProcessing 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes serviceProcessing {
+            0%, 100% { 
+                transform: scale(1.1);
+                box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+            }
+            50% { 
+                transform: scale(1.2);
+                box-shadow: 0 12px 48px rgba(59, 130, 246, 0.6), 0 0 0 6px rgba(59, 130, 246, 0.1);
+            }
+        }
+        
+        .flow-path {
+            transition: all 0.6s ease-in-out;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+        
+        .flow-path.active {
+            opacity: 1 !important;
+            animation: drawPath 1.2s ease-in-out forwards, pathPulse 2s ease-in-out infinite 1.2s;
+        }
+        
+        @keyframes drawPath {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        @keyframes pathPulse {
+            0%, 100% { 
+                stroke-width: 4;
+                filter: drop-shadow(0 0 4px currentColor);
+            }
+            50% { 
+                stroke-width: 6;
+                filter: drop-shadow(0 0 8px currentColor);
+            }
+        }
+        
+        #request-packet {
+            transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 30;
+            transform: translate(-50%, -50%);
+        }
+        
+        #request-packet.moving {
+            opacity: 1 !important;
+            animation: packetGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes packetGlow {
+            0%, 100% { 
+                box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% { 
+                box-shadow: 0 6px 30px rgba(34, 197, 94, 0.8);
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+        
+        .status-update {
+            animation: statusSlide 0.6s ease-out;
+        }
+        
+        @keyframes statusSlide {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Hover effects for better interaction */
+        .service-node:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -76,7 +175,7 @@
                 <p class="text-xl mb-8">Next-Generation Multi-Vendor E-commerce Platform</p>
                 <div class="flex justify-center items-center space-x-8">
                     <div class="text-center">
-                        <div class="text-3xl font-bold">7</div>
+                        <div class="text-3xl font-bold">8</div>
                         <div class="text-sm">Microservices</div>
                     </div>
                     <div class="text-center">
@@ -88,7 +187,7 @@
                         <div class="text-sm">Technologies</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl font-bold">500+</div>
+                        <div class="text-3xl font-bold">600+</div>
                         <div class="text-sm">API Endpoints</div>
                     </div>
                 </div>
@@ -300,6 +399,28 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Analytical Service -->
+                    <div class="service-card rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-lg font-bold">📊 Analytical Service</h4>
+                            <span class="protocol-badge px-3 py-1 rounded-full text-sm font-medium">:50056</span>
+                        </div>
+                        <p class="text-white/90 mb-4">Collects and analyzes data from all services for business intelligence.</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-white/80">Dependencies:</span>
+                                <span class="font-medium">All Services</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/80">Database:</span>
+                                <span class="font-medium">PostgreSQL + ClickHouse</span>
+                            </div>
+                            <div class="text-white/80 text-xs mt-2">
+                                Real-time Analytics, Business Intelligence, Data Insights
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -382,6 +503,143 @@
                                 <span class="font-medium">payment.processed</span>
                                 <span class="text-xs text-gray-600">Financial sync</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Animated Request Flow -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">🎬 Animated Request Flow</h3>
+                <div class="bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl shadow-lg p-8 max-w-7xl mx-auto">
+                    
+                    <!-- Flow Control -->
+                    <div class="text-center mb-6">
+                        <button id="startFlow" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                            🚀 Start Order Request Flow
+                        </button>
+                        <button id="resetFlow" class="ml-3 bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                            🔄 Reset
+                        </button>
+                    </div>
+
+                    <!-- Request Flow Diagram -->
+                    <div id="requestDiagram" class="relative bg-white rounded-lg p-6 min-h-[640px] overflow-hidden">
+                        
+                        <!-- Service Nodes - Better Positioning -->
+                        <div class="absolute top-8 left-16 w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl flex flex-col items-center justify-center text-xs font-bold shadow-lg service-node transition-all duration-300" id="user-node">
+                            <div class="text-2xl">👤</div>
+                            <div>User</div>
+                        </div>
+                        
+                        <div class="absolute top-8 left-1/2 transform -translate-x-1/2 w-28 h-24 bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl flex flex-col items-center justify-center text-xs font-bold shadow-lg service-node transition-all duration-300" id="gateway-node">
+                            <div class="text-xl">🚪</div>
+                            <div>API Gateway</div>
+                            <div class="text-xs opacity-80">:50050</div>
+                        </div>
+                        
+                        <div class="absolute top-36 left-32 w-24 h-24 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-xl flex flex-col items-center justify-center text-xs font-bold shadow-lg service-node transition-all duration-300" id="auth-node">
+                            <div class="text-2xl">🔐</div>
+                            <div>Auth Service</div>
+                            <div class="text-xs opacity-80">:50051</div>
+                        </div>
+                        
+                        <div class="absolute top-36 right-32 w-24 h-24 bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-xl flex flex-col items-center justify-center text-xs font-bold shadow-lg service-node transition-all duration-300" id="order-node">
+                            <div class="text-2xl">🛒</div>
+                            <div>Order Service</div>
+                            <div class="text-xs opacity-80">:50053</div>
+                        </div>
+                        
+                        <div class="absolute top-64 right-16 w-24 h-24 bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-xl flex flex-col items-center justify-center text-xs font-bold shadow-lg service-node transition-all duration-300" id="product-node">
+                            <div class="text-2xl">📦</div>
+                            <div>Product Service</div>
+                            <div class="text-xs opacity-80">:50052</div>
+                        </div>
+                        
+                        <div class="absolute bottom-36 right-32 w-24 h-24 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-xl flex flex-col items-center justify-center text-xs font-bold shadow-lg service-node transition-all duration-300" id="payment-node">
+                            <div class="text-2xl">💳</div>
+                            <div>Payment</div>
+                            <div class="text-xs opacity-80">External</div>
+                        </div>
+                        
+                        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-28 h-24 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-xl flex flex-col items-center justify-center text-xs font-bold shadow-lg service-node transition-all duration-300" id="kafka-node">
+                            <div class="text-xl">⚡</div>
+                            <div>Kafka Events</div>
+                            <div class="text-xs opacity-80">:9092</div>
+                        </div>
+
+                        <!-- Animated Request Packet -->
+                        <div class="absolute w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg opacity-0 transition-all duration-700 z-20" id="request-packet">
+                            📨
+                        </div>
+
+                        <!-- Static Flow Paths (Background) -->
+                        <svg id="flow-bg" class="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 800 600" style="display:none" preserveAspectRatio="none">
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8" />
+                                </marker>
+                                <marker id="activeArrow" markerWidth="12" markerHeight="9" refX="11" refY="4.5" orient="auto">
+                                    <polygon points="0 0, 12 4.5, 0 9" fill="#3b82f6" />
+                                </marker>
+                            </defs>
+                            
+                            <!-- Background flow paths -->
+                            <path d="M 140 70 Q 200 50 260 70" stroke="#e2e8f0" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5" />
+                            <path d="M 290 95 Q 200 130 144 148" stroke="#e2e8f0" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5" />
+                            <path d="M 156 172 Q 220 150 280 95" stroke="#e2e8f0" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5" />
+                            <path d="M 320 95 Q 450 120 544 148" stroke="#e2e8f0" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5" />
+                            <path d="M 556 172 Q 580 220 556 276" stroke="#e2e8f0" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5" />
+                            <path d="M 544 324 Q 520 380 544 436" stroke="#e2e8f0" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5" />
+                            <path d="M 532 460 Q 450 500 360 520" stroke="#e2e8f0" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5" />
+                            <path d="M 320 520 Q 200 480 280 95" stroke="#e2e8f0" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5" />
+                            <path d="M 260 70 Q 200 50 140 70" stroke="#e2e8f0" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5" />
+                        </svg>
+
+                        <!-- Active Flow Lines (Initially Hidden) -->
+                        <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" viewBox="0 0 800 600" id="active-flow" preserveAspectRatio="none">
+                            <defs>
+                                <marker id="activeArrow" markerWidth="12" markerHeight="9" refX="11" refY="4.5" orient="auto">
+                                    <polygon points="0 0, 12 4.5, 0 9" fill="#3b82f6" />
+                                </marker>
+                            </defs>
+                            <!-- These will be activated one by one -->
+                            <path class="flow-path opacity-0" d="M 140 70 Q 200 50 260 70" stroke="#3b82f6" stroke-width="4" fill="none" marker-end="url(#activeArrow)" />
+                            <path class="flow-path opacity-0" d="M 290 95 Q 200 130 144 148" stroke="#10b981" stroke-width="4" fill="none" marker-end="url(#activeArrow)" />
+                            <path class="flow-path opacity-0" d="M 156 172 Q 220 150 280 95" stroke="#10b981" stroke-width="4" fill="none" marker-end="url(#activeArrow)" />
+                            <path class="flow-path opacity-0" d="M 320 95 Q 450 120 544 148" stroke="#eab308" stroke-width="4" fill="none" marker-end="url(#activeArrow)" />
+                            <path class="flow-path opacity-0" d="M 556 172 Q 580 220 556 276" stroke="#6366f1" stroke-width="4" fill="none" marker-end="url(#activeArrow)" />
+                            <path class="flow-path opacity-0" d="M 544 324 Q 520 380 544 436" stroke="#ef4444" stroke-width="4" fill="none" marker-end="url(#activeArrow)" />
+                            <path class="flow-path opacity-0" d="M 532 460 Q 450 500 360 520" stroke="#f97316" stroke-width="4" fill="none" marker-end="url(#activeArrow)" />
+                            <path class="flow-path opacity-0" d="M 320 520 Q 200 480 280 95" stroke="#06b6d4" stroke-width="4" fill="none" marker-end="url(#activeArrow)" />
+                            <path class="flow-path opacity-0" d="M 260 70 Q 200 50 140 70" stroke="#06b6d4" stroke-width="4" fill="none" marker-end="url(#activeArrow)" />
+                        </svg>
+
+                        <!-- Status Messages -->
+                        <div class="absolute bottom-4 left-4 right-4 z-30">
+                            <div id="status-message" class="text-center text-sm font-medium text-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg py-3 px-4 border border-blue-200 shadow-sm">
+                                Click "Start Order Request Flow" to see the animation
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flow Steps Legend -->
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white rounded-lg p-4 shadow border-l-4 border-blue-500">
+                            <div class="font-bold text-blue-700 mb-2">Step 1-2: Authentication</div>
+                            <div class="text-sm text-gray-600">User → Gateway → Auth Service → Gateway</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 shadow border-l-4 border-yellow-500">
+                            <div class="font-bold text-yellow-700 mb-2">Step 3-4: Order Processing</div>
+                            <div class="text-sm text-gray-600">Gateway → Order Service → Product Service</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 shadow border-l-4 border-red-500">
+                            <div class="font-bold text-red-700 mb-2">Step 5-6: Payment</div>
+                            <div class="text-sm text-gray-600">Order → Payment Gateway → Kafka Events</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 shadow border-l-4 border-cyan-500">
+                            <div class="font-bold text-cyan-700 mb-2">Step 7-8: Response</div>
+                            <div class="text-sm text-gray-600">Kafka → Gateway → User Response</div>
                         </div>
                     </div>
                 </div>
@@ -828,10 +1086,16 @@
 │   │   │   ├── <span class="component">cart/</span>         <span class="text-gray-400"># Shopping cart</span>
 │   │   │   └── <span class="component">payment/</span>      <span class="text-gray-400"># Payment processing</span>
 │   │   └── <span class="folder">prisma/</span>
-│   └── <span class="folder">notification-service/</span>  <span class="text-gray-400"># Notifications</span>
+│   ├── <span class="folder">notification-service/</span>  <span class="text-gray-400"># Notifications</span>
+│   │   ├── <span class="folder">src/</span>
+│   │   │   ├── <span class="component">email/</span>        <span class="text-gray-400"># Email notifications</span>
+│   │   │   └── <span class="component">sms/</span>          <span class="text-gray-400"># SMS notifications</span>
+│   │   └── <span class="folder">prisma/</span>
+│   └── <span class="folder">analytical-service/</span>   <span class="text-gray-400"># Analytics & BI</span>
 │       ├── <span class="folder">src/</span>
-│       │   ├── <span class="component">email/</span>        <span class="text-gray-400"># Email notifications</span>
-│       │   └── <span class="component">sms/</span>          <span class="text-gray-400"># SMS notifications</span>
+│       │   ├── <span class="component">analytics/</span>     <span class="text-gray-400"># Data analytics engine</span>
+│       │   ├── <span class="component">reports/</span>       <span class="text-gray-400"># Business reports</span>
+│       │   └── <span class="component">insights/</span>      <span class="text-gray-400"># Business insights</span>
 │       └── <span class="folder">prisma/</span>
 ├── <span class="folder">libs/</span>                     <span class="text-gray-400"># Shared libraries</span>
 │   └── <span class="folder">shared/</span>
@@ -843,7 +1107,8 @@
 │   ├── <span class="config">user.proto</span>
 │   ├── <span class="config">vendor.proto</span>
 │   ├── <span class="config">order.proto</span>
-│   └── <span class="config">notification.proto</span>
+│   ├── <span class="config">notification.proto</span>
+│   └── <span class="config">analytical.proto</span>
 └── <span class="config">docker-compose.yml</span>       <span class="text-gray-400"># Container orchestration</span>
 </pre>
                     </div>
@@ -1372,13 +1637,15 @@
                 {id: 6, label: 'Order Service\n:50053\n(Processing & Payment)', color: '#667eea', shape: 'box', size: 30, font: {size: 9}, level: 3},
                 {id: 7, label: 'Vendor Service\n:50054\n(Store Management)', color: '#667eea', shape: 'box', size: 30, font: {size: 9}, level: 3},
                 {id: 8, label: 'Notification\n:50055\n(Email/SMS/Push)', color: '#667eea', shape: 'box', size: 30, font: {size: 9}, level: 3},
+                {id: 15, label: 'Analytical\n:50056\n(Data Analytics)', color: '#667eea', shape: 'box', size: 30, font: {size: 9}, level: 3},
                 
                 // Database Layer - Separate DB per service
                 {id: 9, label: 'User DB\n(PostgreSQL)\nPrisma ORM', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4},
                 {id: 10, label: 'Product DB\n(PostgreSQL)\nPrisma ORM', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4},
                 {id: 11, label: 'Order DB\n(PostgreSQL)\nPrisma ORM', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4},
                 {id: 12, label: 'Vendor DB\n(PostgreSQL)\nPrisma ORM', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4},
-                {id: 13, label: 'Notification DB\n(PostgreSQL)\nPrisma ORM', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4}
+                {id: 13, label: 'Notification DB\n(PostgreSQL)\nPrisma ORM', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4},
+                {id: 16, label: 'Analytics DB\n(PostgreSQL)\n+ ClickHouse', color: '#336791', shape: 'cylinder', size: 20, font: {size: 8}, level: 4}
             ]);
 
             const edges = new vis.DataSet([
@@ -1392,6 +1659,7 @@
                 {from: 2, to: 6, color: '#667eea', width: 2, label: 'gRPC', font: {size: 7}, dashes: true, smooth: {type: 'continuous'}},
                 {from: 2, to: 7, color: '#667eea', width: 2, label: 'gRPC', font: {size: 7}, dashes: true, smooth: {type: 'continuous'}},
                 {from: 2, to: 8, color: '#667eea', width: 2, label: 'gRPC', font: {size: 7}, dashes: true, smooth: {type: 'continuous'}},
+                {from: 2, to: 15, color: '#667eea', width: 2, label: 'gRPC', font: {size: 7}, dashes: true, smooth: {type: 'continuous'}},
                 
                 // Services to Kafka (Event Publishing)
                 {from: 4, to: 3, color: '#ff6b6b', width: 2, label: 'user.events', font: {size: 7, color: '#ff6b6b'}, dashes: [8,3], smooth: {type: 'continuous'}},
@@ -1399,8 +1667,10 @@
                 {from: 6, to: 3, color: '#ff6b6b', width: 3, label: 'order.events', font: {size: 7, color: '#ff6b6b'}, dashes: [8,3], smooth: {type: 'continuous'}},
                 {from: 7, to: 3, color: '#ff6b6b', width: 2, label: 'vendor.events', font: {size: 7, color: '#ff6b6b'}, dashes: [8,3], smooth: {type: 'continuous'}},
                 {from: 8, to: 3, color: '#ff6b6b', width: 2, label: 'notification.sent', font: {size: 7, color: '#ff6b6b'}, dashes: [8,3], smooth: {type: 'continuous'}},
+                {from: 15, to: 3, color: '#ff6b6b', width: 2, label: 'analytics.events', font: {size: 7, color: '#ff6b6b'}, dashes: [8,3], smooth: {type: 'continuous'}},
                 
-                // Kafka to Services (Event Consumption)
+                // Kafka to Services (Event Consumption) - Analytics consumes ALL events
+                {from: 3, to: 15, color: '#ffa500', width: 3, label: 'all events\nconsumer', font: {size: 7, color: '#ffa500'}, dashes: [5,5], smooth: {type: 'continuous'}},
                 {from: 3, to: 4, color: '#ffa500', width: 2, label: 'consumes\nevents', font: {size: 7, color: '#ffa500'}, dashes: [5,5], smooth: {type: 'continuous'}},
                 {from: 3, to: 5, color: '#ffa500', width: 2, label: 'inventory\nupdates', font: {size: 7, color: '#ffa500'}, dashes: [5,5], smooth: {type: 'continuous'}},
                 {from: 3, to: 7, color: '#ffa500', width: 2, label: 'vendor\nnotifications', font: {size: 7, color: '#ffa500'}, dashes: [5,5], smooth: {type: 'continuous'}},
@@ -1412,12 +1682,20 @@
                 {from: 6, to: 11, color: '#336791', width: 2, label: 'Owns DB', font: {size: 6}, smooth: {type: 'continuous'}},
                 {from: 7, to: 12, color: '#336791', width: 2, label: 'Owns DB', font: {size: 6}, smooth: {type: 'continuous'}},
                 {from: 8, to: 13, color: '#336791', width: 2, label: 'Owns DB', font: {size: 6}, smooth: {type: 'continuous'}},
+                {from: 15, to: 16, color: '#336791', width: 2, label: 'Owns DB', font: {size: 6}, smooth: {type: 'continuous'}},
                 
                 // Data Population (Cross-service sync via gRPC - NOT direct DB access)
                 {from: 6, to: 4, color: '#10b981', width: 1, label: 'user data\nvia gRPC', font: {size: 6, color: '#10b981'}, dashes: [3,3], smooth: {type: 'curvedCW'}},
                 {from: 6, to: 5, color: '#10b981', width: 1, label: 'product data\nvia gRPC', font: {size: 6, color: '#10b981'}, dashes: [3,3], smooth: {type: 'curvedCW'}},
                 {from: 7, to: 4, color: '#10b981', width: 1, label: 'user validation\nvia gRPC', font: {size: 6, color: '#10b981'}, dashes: [3,3], smooth: {type: 'curvedCW'}},
-                {from: 5, to: 7, color: '#10b981', width: 1, label: 'vendor products\nvia gRPC', font: {size: 6, color: '#10b981'}, dashes: [3,3], smooth: {type: 'curvedCW'}}
+                {from: 5, to: 7, color: '#10b981', width: 1, label: 'vendor products\nvia gRPC', font: {size: 6, color: '#10b981'}, dashes: [3,3], smooth: {type: 'curvedCW'}},
+                
+                // Analytics Data Collection (from all services)
+                {from: 15, to: 4, color: '#f59e0b', width: 1, label: 'user analytics\nvia gRPC', font: {size: 6, color: '#f59e0b'}, dashes: [3,3], smooth: {type: 'curvedCW'}},
+                {from: 15, to: 5, color: '#f59e0b', width: 1, label: 'product analytics\nvia gRPC', font: {size: 6, color: '#f59e0b'}, dashes: [3,3], smooth: {type: 'curvedCW'}},
+                {from: 15, to: 6, color: '#f59e0b', width: 1, label: 'order analytics\nvia gRPC', font: {size: 6, color: '#f59e0b'}, dashes: [3,3], smooth: {type: 'curvedCW'}},
+                {from: 15, to: 7, color: '#f59e0b', width: 1, label: 'vendor analytics\nvia gRPC', font: {size: 6, color: '#f59e0b'}, dashes: [3,3], smooth: {type: 'curvedCW'}},
+                {from: 15, to: 8, color: '#f59e0b', width: 1, label: 'notification analytics\nvia gRPC', font: {size: 6, color: '#f59e0b'}, dashes: [3,3], smooth: {type: 'curvedCW'}}
             ]);
 
             const data = { nodes, edges };
@@ -1557,6 +1835,275 @@
             card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(card);
         });
+
+        // Animated Request Flow Functionality (dynamic geometry)
+        let flowActive = false;
+
+        function centerOf(el) {
+            const rect = el.getBoundingClientRect();
+            const parent = document.getElementById('requestDiagram').getBoundingClientRect();
+            return {
+                x: rect.left - parent.left + rect.width / 2,
+                y: rect.top - parent.top + rect.height / 2
+            };
+        }
+
+        function computeGeometry() {
+            const user = document.getElementById('user-node');
+            const gw = document.getElementById('gateway-node');
+            const auth = document.getElementById('auth-node');
+            const order = document.getElementById('order-node');
+            const product = document.getElementById('product-node');
+            const payment = document.getElementById('payment-node');
+            const kafka = document.getElementById('kafka-node');
+            const packet = document.getElementById('request-packet');
+            const activeFlow = document.getElementById('active-flow');
+            if (!user || !gw || !auth || !order || !product || !payment || !kafka || !packet || !activeFlow) return null;
+
+            const pUser = centerOf(user);
+            const pGw = centerOf(gw);
+            const pAuth = centerOf(auth);
+            const pOrder = centerOf(order);
+            const pProduct = centerOf(product);
+            const pPayment = centerOf(payment);
+            const pKafka = centerOf(kafka);
+
+            // Clip a line from A->B to the border of source and target rectangles
+            function clipPointTowards(srcCenter, dstCenter, el) {
+                const rect = el.getBoundingClientRect();
+                const parent = document.getElementById('requestDiagram').getBoundingClientRect();
+                const hw = rect.width / 2;
+                const hh = rect.height / 2;
+                const vx = dstCenter.x - srcCenter.x;
+                const vy = dstCenter.y - srcCenter.y;
+                // Avoid division by zero
+                const denom = Math.max(Math.abs(vx) / (hw || 1), Math.abs(vy) / (hh || 1)) || 1;
+                const s = Math.min(1, 1 / denom);
+                return { x: srcCenter.x + vx * s, y: srcCenter.y + vy * s };
+            }
+
+            function clipSegment(aEl, bEl) {
+                const aC = centerOf(aEl);
+                const bC = centerOf(bEl);
+                const aEdge = clipPointTowards(aC, bC, aEl);
+                const bEdge = clipPointTowards(bC, aC, bEl);
+                return [aEdge, bEdge];
+            }
+
+            // Helper to set path d with a smooth quadratic curve
+            const makeQ = (a, b, curve = 0.25) => {
+                const cx = a.x + (b.x - a.x) * curve;
+                const cy = a.y + (b.y - a.y) * curve;
+                return `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`;
+            };
+
+            const paths = activeFlow.querySelectorAll('.flow-path');
+            const segments = [
+                clipSegment(user, gw),        // 0 user -> gateway
+                clipSegment(gw, auth),        // 1 gateway -> auth
+                clipSegment(auth, gw),        // 2 auth -> gateway
+                clipSegment(gw, order),       // 3 gateway -> order
+                clipSegment(order, product),  // 4 order -> product
+                clipSegment(product, payment),// 5 product -> payment
+                clipSegment(payment, kafka),  // 6 payment -> kafka
+                clipSegment(kafka, gw),       // 7 kafka -> gateway
+                clipSegment(gw, user)         // 8 gateway -> user
+            ];
+
+            segments.forEach((seg, i) => {
+                if (paths[i]) {
+                    paths[i].setAttribute('d', makeQ(seg[0], seg[1], i === 4 || i === 5 ? 0.35 : 0.25));
+                }
+            });
+
+            // Compute packet positions slightly offset along the path direction
+            function offsetTowards(a, b, t = 0.08) {
+                return { top: `${a.y + (b.y - a.y) * t}px`, left: `${a.x + (b.x - a.x) * t}px` };
+            }
+            function offsetTowardsEnd(a, b, t = 0.92) {
+                return { top: `${a.y + (b.y - a.y) * t}px`, left: `${a.x + (b.x - a.x) * t}px` };
+            }
+
+            const flowSteps = [
+                { from: 'user-node', to: 'gateway-node', message: '🚀 User sends order request to API Gateway', packetStart: offsetTowards(segments[0][0], segments[0][1]), packetEnd: offsetTowardsEnd(segments[0][0], segments[0][1]), pathIndex: 0, delay: 0 },
+                { from: 'gateway-node', to: 'auth-node', message: '🔐 Gateway forwards request to Auth Service for validation', packetStart: offsetTowards(segments[1][0], segments[1][1]), packetEnd: offsetTowardsEnd(segments[1][0], segments[1][1]), pathIndex: 1, delay: 1500 },
+                { from: 'auth-node', to: 'gateway-node', message: '✅ Auth Service validates user and returns token to Gateway', packetStart: offsetTowards(segments[2][0], segments[2][1]), packetEnd: offsetTowardsEnd(segments[2][0], segments[2][1]), pathIndex: 2, delay: 3000 },
+                { from: 'gateway-node', to: 'order-node', message: '📋 Gateway forwards authenticated request to Order Service', packetStart: offsetTowards(segments[3][0], segments[3][1]), packetEnd: offsetTowardsEnd(segments[3][0], segments[3][1]), pathIndex: 3, delay: 4500 },
+                { from: 'order-node', to: 'product-node', message: '📦 Order Service checks product inventory and stock availability', packetStart: offsetTowards(segments[4][0], segments[4][1]), packetEnd: offsetTowardsEnd(segments[4][0], segments[4][1]), pathIndex: 4, delay: 6000 },
+                { from: 'product-node', to: 'payment-node', message: '💳 Product Service confirms stock, initiates payment processing', packetStart: offsetTowards(segments[5][0], segments[5][1]), packetEnd: offsetTowardsEnd(segments[5][0], segments[5][1]), pathIndex: 5, delay: 7500 },
+                { from: 'payment-node', to: 'kafka-node', message: '⚡ Payment processed successfully, emitting events to Kafka broker', packetStart: offsetTowards(segments[6][0], segments[6][1]), packetEnd: offsetTowardsEnd(segments[6][0], segments[6][1]), pathIndex: 6, delay: 9000 },
+                { from: 'kafka-node', to: 'gateway-node', message: '🔄 Kafka notifies all services and Gateway of successful completion', packetStart: offsetTowards(segments[7][0], segments[7][1]), packetEnd: offsetTowardsEnd(segments[7][0], segments[7][1]), pathIndex: 7, delay: 10500 },
+                { from: 'gateway-node', to: 'user-node', message: '🎉 Gateway returns successful order confirmation to User', packetStart: offsetTowards(segments[8][0], segments[8][1]), packetEnd: offsetTowardsEnd(segments[8][0], segments[8][1]), pathIndex: 8, delay: 12000 }
+            ];
+
+            // initial packet near user's edge towards gateway
+            const initial = segments[0][0];
+            return { flowSteps, packetStart: { top: `${initial.y}px`, left: `${initial.x}px` } };
+        }
+
+        // Sync SVG viewBox to the diagram container so coordinates align 1:1 with CSS pixels
+        function syncSvgViewBox() {
+            const container = document.getElementById('requestDiagram');
+            const active = document.getElementById('active-flow');
+            const bg = document.getElementById('flow-bg');
+            if (!container || !active || !bg) return;
+            const rect = container.getBoundingClientRect();
+            const vb = `0 0 ${Math.round(rect.width)} ${Math.round(rect.height)}`;
+            active.setAttribute('viewBox', vb);
+            bg.setAttribute('viewBox', vb);
+        }
+
+        function startRequestFlow() {
+            if (flowActive) return;
+            
+            flowActive = true;
+            const packet = document.getElementById('request-packet');
+            const statusMessage = document.getElementById('status-message');
+            const flowPaths = document.querySelectorAll('.flow-path');
+            syncSvgViewBox();
+            const geom = computeGeometry();
+            if (!geom) return;
+            
+            // Reset all states
+            document.querySelectorAll('.service-node').forEach(node => {
+                node.classList.remove('active', 'processing');
+            });
+            
+            flowPaths.forEach(path => {
+                path.classList.remove('active');
+            });
+
+            // Initial packet position (user center)
+            packet.style.top = geom.packetStart.top;
+            packet.style.left = geom.packetStart.left;
+            packet.classList.add('moving');
+
+            // Execute flow steps
+            geom.flowSteps.forEach((step, index) => {
+                setTimeout(() => {
+                    // Update status message with animation
+                    statusMessage.innerHTML = `<div class="status-update font-semibold text-blue-700">${step.message}</div>`;
+                    
+                    // Reset previous states
+                    document.querySelectorAll('.service-node').forEach(node => {
+                        node.classList.remove('active', 'processing');
+                    });
+                    
+                    // Activate current nodes
+                    const fromNode = document.getElementById(step.from);
+                    const toNode = document.getElementById(step.to);
+                    
+                    fromNode.classList.add('active');
+                    
+                    // Activate flow path
+                    if (flowPaths[step.pathIndex]) {
+                        flowPaths[step.pathIndex].classList.add('active');
+                    }
+                    
+                    // Move packet to start position
+                    packet.style.top = step.packetStart.top;
+                    packet.style.left = step.packetStart.left;
+                    
+                    // Animate packet to end position
+                    setTimeout(() => {
+                        packet.style.top = step.packetEnd.top;
+                        packet.style.left = step.packetEnd.left;
+                        toNode.classList.add('processing');
+                    }, 300);
+                    
+                    // Complete animation if last step
+                    if (index === geom.flowSteps.length - 1) {
+                        setTimeout(() => {
+                            // Final celebration
+                            statusMessage.innerHTML = `
+                                <div class="status-update font-bold text-green-700 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+                                    ✨ Order request completed successfully! 
+                                    <br><span class="text-sm font-normal">All services worked together seamlessly in ${(geom.flowSteps.length * 1.5).toFixed(1)} seconds</span>
+                                </div>
+                            `;
+                            
+                            // Add final glow effect to all nodes
+                            document.querySelectorAll('.service-node').forEach(node => {
+                                node.style.boxShadow = '0 0 30px rgba(34, 197, 94, 0.5)';
+                                setTimeout(() => {
+                                    node.style.boxShadow = '';
+                                    node.classList.remove('active', 'processing');
+                                }, 2000);
+                            });
+                            
+                            // Reset packet
+                            setTimeout(() => {
+                                packet.classList.remove('moving');
+                                flowActive = false;
+                            }, 3000);
+                        }, 1500);
+                    }
+                }, step.delay);
+            });
+        }
+
+        function resetFlow() {
+            flowActive = false;
+            const packet = document.getElementById('request-packet');
+            const statusMessage = document.getElementById('status-message');
+            const flowPaths = document.querySelectorAll('.flow-path');
+            const geom = computeGeometry();
+            
+            // Reset packet
+            packet.classList.remove('moving');
+            if (geom) {
+                packet.style.top = geom.packetStart.top;
+                packet.style.left = geom.packetStart.left;
+            }
+            
+            // Reset all nodes
+            document.querySelectorAll('.service-node').forEach(node => {
+                node.classList.remove('active', 'processing');
+                node.style.boxShadow = '';
+            });
+            
+            // Reset all flow paths
+            flowPaths.forEach(path => {
+                path.classList.remove('active');
+            });
+            
+            // Reset status message
+            statusMessage.innerHTML = `
+                <div class="font-medium text-gray-700">
+                    Click "Start Order Request Flow" to see the animation
+                </div>
+            `;
+        }
+
+        // Event listeners for flow control
+        document.getElementById('startFlow').addEventListener('click', startRequestFlow);
+        document.getElementById('resetFlow').addEventListener('click', resetFlow);
+
+        // Recompute geometry on resize for correct alignment
+        window.addEventListener('resize', () => {
+            if (!flowActive) {
+                syncSvgViewBox();
+                const paths = document.querySelectorAll('.flow-path');
+                paths.forEach(p => p.classList.remove('active'));
+                const geom = computeGeometry();
+                if (geom) {
+                    const packet = document.getElementById('request-packet');
+                    packet.style.top = geom.packetStart.top;
+                    packet.style.left = geom.packetStart.left;
+                }
+            }
+        });
+
+        // Auto-reset after completion
+        setInterval(() => {
+            if (!flowActive) {
+                const flowPaths = document.querySelectorAll('.flow-path');
+                const hasActiveFlow = Array.from(flowPaths).some(path => path.classList.contains('active'));
+                if (hasActiveFlow) {
+                    setTimeout(resetFlow, 5000);
+                }
+            }
+        }, 1000);
     </script>
 </body>
 </html>
